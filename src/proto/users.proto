@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package users;
+
+// Expose service
+service UsersController{
+  // Endpoints
+  rpc findById(UserById) returns (User){}
+  rpc findByDni(UserByDni) returns (User){}
+  rpc findByName(UserByName) returns (User){}
+  rpc findAll(Empty) returns (UsersList){}
+  rpc createUser(UserDto) returns (User){}
+  rpc updateUser(UserDto) returns (User){}
+  rpc deleteUser(UserById) returns (User){}
+}
+
+// Receives a query with id as param
+message UserById{
+  int32 id = 1;
+}
+
+// Receives a query with dni as param
+message UserByDni{
+  int32 dni = 1;
+}
+
+// Receives a query with name as param
+message UserByName{
+  string name = 1;
+}
+
+message Empty{
+  // Void on purpose
+}
+
+message UserDto{
+  int32 dni = 1;
+  string name = 2;
+  string email = 3;
+  bool active = 4;
+}
+
+
+// Returning message for every query received
+message User{
+  int64 id = 1;
+  int32 dni = 2;
+  string name = 3;
+  string email = 4;
+  bool active = 5;
+}
+
+// List of users
+message UsersList{
+  repeated User users = 1;
+}
