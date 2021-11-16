@@ -1,0 +1,41 @@
+version: "3.7"
+
+services:
+  app:
+    container_name: grpc_users
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 50051:50051
+      - 3000:3000
+      - 9229:9229
+    command: npm run start:dev
+    networks:
+      - nest-users
+
+  db:
+    container_name: postgres_users_db
+    image: postgres:12
+    networks:
+      - nest-users
+    environment:
+      POSTGRES_PASSWORD: root
+      POSTGRES_USER: root
+      POSTGRES_DB: test_db
+      PG_DATA: /var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+
+volumes:
+  pgdata: {}
+
+networks:
+  nest-users:
