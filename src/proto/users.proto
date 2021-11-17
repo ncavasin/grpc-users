@@ -3,15 +3,15 @@ syntax = "proto3";
 package users;
 
 // Expose service
-service UsersController{
+service UsersService{
   // Endpoints
   rpc findById(UserById) returns (User){}
   rpc findByDni(UserByDni) returns (User){}
   rpc findByName(UserByName) returns (User){}
-  rpc findAll(Empty) returns (UsersList){}
+  rpc findAll(Empty) returns (UsersList){};
   rpc createUser(UserDto) returns (User){}
-  rpc updateUser(UserDto) returns (User){}
-  rpc deleteUser(UserById) returns (User){}
+  rpc updateUser(User) returns (UserDto){}
+  rpc deleteUser(UserById) returns (Empty){}
 }
 
 // Receives a query with id as param
@@ -43,7 +43,7 @@ message UserDto{
 
 // Returning message for every query received
 message User{
-  int64 id = 1;
+  int32 id = 1;
   int32 dni = 2;
   string name = 3;
   string email = 4;
@@ -52,5 +52,5 @@ message User{
 
 // List of users
 message UsersList{
-  repeated User users = 1;
+  repeated User user = 1;
 }
