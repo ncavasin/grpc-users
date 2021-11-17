@@ -36,17 +36,9 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async update(
-    id: number,
-    updateUserDto: UpdateUserDto,
-  ): Promise<UpdateUserDto> {
+  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     console.log(`This action updated user #${id}`);
-    await this.userRepository.update(id, updateUserDto);
-    return updateUserDto;
-  }
-
-  async delete(id: number): Promise<void> {
-    console.log(`This action removed user #${id}`);
-    await this.userRepository.delete(id);
+    this.userRepository.update(id, updateUserDto);
+    return this.findById(id);
   }
 }
