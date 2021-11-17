@@ -36,10 +36,13 @@ export class UsersService {
     return await this.userRepository.find();
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto): Promise<void> {
+  async update(
+    id: number,
+    updateUserDto: UpdateUserDto,
+  ): Promise<UpdateUserDto> {
     console.log(`This action updated user #${id}`);
     await this.userRepository.update(id, updateUserDto);
-    return;
+    return updateUserDto;
   }
 
   async delete(id: number): Promise<void> {
