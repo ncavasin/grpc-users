@@ -7,8 +7,8 @@ const microserviceOptions = {
   transport: Transport.GRPC,
   options: {
     url: '0.0.0.0:50051',
-    package: 'proto',
-    protoPath: join(process.cwd(), '/src/proto/users.proto'),
+    package: 'users',
+    protoPath: join(process.cwd(), 'src/proto/users.proto'),
   },
 };
 
@@ -17,6 +17,7 @@ async function bootstrap() {
     AppModule,
     microserviceOptions,
   );
+
   await app.listen();
 }
 
