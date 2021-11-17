@@ -1,35 +1,50 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { GrpcMethod, Payload } from '@nestjs/microservices';
 import { UsersService } from './users.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller()
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @MessagePattern('createUser')
-  create(@Payload() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+  @GrpcMethod('UsersService', 'findById')
+  findById(iUserById: IUserById): Promise<User> {
+    return this.usersService.findById(iUserById.id);
   }
 
-  @MessagePattern('findAllUsers')
-  findAll() {
+  @GrpcMethod('UsersService', 'findAll')
+  findAll(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
-  @MessagePattern('findOneUser')
-  findOne(@Payload() id: number) {
-    return this.usersService.findById(id);
+  @GrpcMethod('UsersService', 'createUser')
+  createUser(iUserDto: IUserDto): Promise<User> {
+    console.log(`${iUserDto.name}`);
+    const user: User = new User();
+    user.dni = iUserDto.dni;
+    user.name = iUserDto.name;
+    user.email = iUserDto.email;
+    user.active = iUserDto.active;
+    return this.usersService.create(user);
   }
 
-  @MessagePattern('updateUser')
-  update(@Payload() updateUserDto: User) {
-    return this.usersService.update(updateUserDto.id, updateUserDto);
+  @GrpcMethod('UsersService', 'updateUser')
+  async updateUser(user: IUser): Promise<UpdateUserDto> {
+    console.log(`${(user.id, user.dni, user.name, user.email, user.active)}`);
+    return this.usersService.update(user.id, user);
   }
 
-  @MessagePattern('removeUser')
-  remove(@Payload() id: number) {
-    return this.usersService.delete(id);
+  @GrpcMethod('UsersService', 'deactivateUser')
+  async deactivateUser(iUserById: IUserById): Promise<User> {
+    const user: User = await this.usersService.findById(iUserById.id);
+    user.active = false;
+    await this.usersService.update(user.id, user);
+    return await this.usersService.findById(iUserById.id);
+  }
+
+  @GrpcMethod('UsersService', 'deleteUser')
+  deleteUser(iUserById: IUserById) {
+    this.usersService.delete(iUserById.id);
   }
 }

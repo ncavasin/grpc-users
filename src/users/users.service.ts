@@ -41,4 +41,9 @@ export class UsersService {
     this.userRepository.update(id, updateUserDto);
     return this.findById(id);
   }
+
+  async delete(id: number) {
+    console.log(`This action removed user #${id}`);
+    await this.userRepository.delete(id);
+  }
 }

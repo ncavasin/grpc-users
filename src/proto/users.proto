@@ -10,8 +10,9 @@ service UsersService{
   rpc findByName(UserByName) returns (User){}
   rpc findAll(Empty) returns (UsersList){};
   rpc createUser(UserDto) returns (User){}
-  rpc updateUser(User) returns (UserDto){}
-  rpc deleteUser(UserById) returns (Empty){}
+  rpc updateUser(User) returns (User){}
+  rpc deactivateUser(UserById) returns (User){}
+  rpc deleteUser(UserById) returns (User){}
 }
 
 // Receives a query with id as param
@@ -34,10 +35,10 @@ message Empty{
 }
 
 message UserDto{
-  int32 dni = 1;
-  string name = 2;
-  string email = 3;
-  bool active = 4;
+  optional int32 dni = 1;
+  optional string name = 2;
+  optional string email = 3;
+  optional bool active = 4;
 }
 
 
