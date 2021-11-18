@@ -8,7 +8,7 @@ service UsersService{
   rpc findById(UserById) returns (User){}
   rpc findByDni(UserByDni) returns (User){}
   rpc findByName(UserByName) returns (User){}
-  rpc findAll(Empty) returns (UsersList){};
+  rpc findAll(Empty) returns (UsersList){}
   rpc createUser(UserDto) returns (User){}
   rpc updateUser(User) returns (User){}
   rpc deactivateUser(UserById) returns (User){}
