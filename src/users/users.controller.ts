@@ -14,13 +14,19 @@ export class UsersController {
   }
 
   @GrpcMethod('UsersService', 'findAll')
-  findAll(): Promise<User[]> {
-    return this.usersService.findAll();
+  async findAll(): Promise<User[]> {
+    return await this.usersService.findAll();
+    // Get the promise
+    // const list = this.usersService.findAll();
+    // // Handle it
+    // let users: User[];
+    // list.then((l) => l.forEach((user: User) => console.log(`${user.name}`)));
+    // list.then((l) => l.forEach((user: User) => users.push(user)));
   }
 
   @GrpcMethod('UsersService', 'createUser')
   createUser(iUserDto: IUserDto): Promise<User> {
-    console.log(`${iUserDto.name}`);
+    console.log(`User '${iUserDto.name}' created`);
     const user: User = new User();
     user.dni = iUserDto.dni;
     user.name = iUserDto.name;
@@ -31,20 +37,25 @@ export class UsersController {
 
   @GrpcMethod('UsersService', 'updateUser')
   async updateUser(user: IUser): Promise<UpdateUserDto> {
-    console.log(`${(user.id, user.dni, user.name, user.email, user.active)}`);
-    return this.usersService.update(user.id, user);
+    console.log(`User #${user.id} updated`);
+    await this.usersService.update(user.id, user);
+    return this.usersService.findById(user.id);
   }
 
   @GrpcMethod('UsersService', 'deactivateUser')
   async deactivateUser(iUserById: IUserById): Promise<User> {
+    console.log(`User #${iUserById.id} deactivated`);
     const user: User = await this.usersService.findById(iUserById.id);
     user.active = false;
     await this.usersService.update(user.id, user);
-    return await this.usersService.findById(iUserById.id);
+    return await this.usersService.findById(user.id);
   }
 
   @GrpcMethod('UsersService', 'deleteUser')
-  deleteUser(iUserById: IUserById) {
-    this.usersService.delete(iUserById.id);
+  async deleteUser(iUserById: IUserById): Promise<User> {
+    console.log(`User #${iUserById.id} deleted`);
+    const user: User = await this.usersService.findById(iUserById.id);
+    await this.usersService.delete(iUserById.id);
+    return user;
   }
 }
