@@ -39,9 +39,9 @@ export class UsersService {
     return { user: data };
   }
 
-  update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     console.log(`This action updated user #${id}`);
-    this.userRepository.update(id, updateUserDto);
+    await this.userRepository.update(id, updateUserDto);
     return this.findById(id);
   }
 
