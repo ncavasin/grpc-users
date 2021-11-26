@@ -35,8 +35,8 @@ export class UsersService {
   async findAll(){
     let data = await this.userRepository.find();
     // Wrap the data to comply with .proto file declaration
+    // Make sure to use EXACTLY the same repeated variable name used in .proto
     return { user: data };
-
   }
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
