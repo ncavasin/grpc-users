@@ -33,7 +33,6 @@ export class UsersService {
   }
 
   async findAll(){
-    // Get the promise
     let data = await this.userRepository.find();
     // Wrap the data to comply with .proto file declaration
     return { user: data };
