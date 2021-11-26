@@ -14,14 +14,8 @@ export class UsersController {
   }
 
   @GrpcMethod('UsersService', 'findAll')
-  async findAll(): Promise<User[]> {
+  async findAll(){
     return await this.usersService.findAll();
-    // Get the promise
-    // const list = this.usersService.findAll();
-    // // Handle it
-    // let users: User[];
-    // list.then((l) => l.forEach((user: User) => console.log(`${user.name}`)));
-    // list.then((l) => l.forEach((user: User) => users.push(user)));
   }
 
   @GrpcMethod('UsersService', 'createUser')
