@@ -32,8 +32,12 @@ export class UsersService {
     return await this.userRepository.findOne(name);
   }
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  async findAll(){
+    // Get the promise
+    let data = await this.userRepository.find();
+    // Wrap the data to comply with .proto file declaration
+    return { user: data };
+
   }
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
